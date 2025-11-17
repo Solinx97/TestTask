@@ -12,6 +12,8 @@ internal class JournalService(UserContext context) : IJournalService
 
     public async Task<JournalModel?> CreateAsync(ExceptionType type, string data)
     {
+        ArgumentException.ThrowIfNullOrEmpty(data, nameof(data));
+
         var journal = new JournalModel
         {
             Type = type,
@@ -27,8 +29,8 @@ internal class JournalService(UserContext context) : IJournalService
 
     public async Task<JournalRangeModel> GetRangeAsync(int skip, int take)
     {
-        ArgumentOutOfRangeException.ThrowIfNegative(skip);
-        ArgumentOutOfRangeException.ThrowIfNegative(take);
+        ArgumentOutOfRangeException.ThrowIfNegative(skip, nameof(skip));
+        ArgumentOutOfRangeException.ThrowIfNegative(take, nameof(take));
 
         var journals = await _context.Set<JournalModel>()
             .Skip(skip)

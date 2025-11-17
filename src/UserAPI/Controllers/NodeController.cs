@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using UserAPI.Enums;
 using UserAPI.Exceptions;
@@ -8,6 +9,7 @@ namespace UserAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class NodeController(INodeService nodeService, IJournalService journalService , ILogger<NodeController> logger) : ControllerBase
 {
     private readonly INodeService _nodeService = nodeService;

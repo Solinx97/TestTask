@@ -13,4 +13,6 @@ public class UserContext : DbContext
     public DbSet<JournalModel>? Journal { get; }
 
     public DbSet<NodeModel>? Node { get; }
+
+    public DbSet<UserModel>? User { get; }
 }

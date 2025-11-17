@@ -10,10 +10,10 @@ public class SecureException(string message) : Exception(message)
 
     public static async Task ThrowIfAnyChildrenExist(UserContext context, int nodeId)
     {
-        var countChildrens = await context.Set<NodeModel>()
+        var count = await context.Set<NodeModel>()
             .AsNoTracking()
             .CountAsync(n => n.ParentNodeId == nodeId);
-        if (countChildrens > 0)
+        if (count > 0)
         {
             throw new SecureException("You have to delete all children nodes first");
         }
@@ -21,10 +21,10 @@ public class SecureException(string message) : Exception(message)
 
     public static async Task ThrowIfParentNotExist(UserContext context, int parentId)
     {
-        var countChildrens = await context.Set<NodeModel>()
+        var count = await context.Set<NodeModel>()
             .AsNoTracking()
             .CountAsync(n => n.Id == parentId);
-        if (countChildrens == 0)
+        if (count == 0)
         {
             throw new SecureException("The parent with the specified ID does not exist");
         }
@@ -32,12 +32,23 @@ public class SecureException(string message) : Exception(message)
 
     public static async Task ThrowIfNodeNameNotUnique(UserContext context, string nodeName, int parentId)
     {
-        var countChildrens = await context.Set<NodeModel>()
+        var count = await context.Set<NodeModel>()
             .AsNoTracking()
             .CountAsync(n => n.ParentNodeId == parentId && n.Name == nodeName);
-        if (countChildrens > 0)
+        if (count > 0)
         {
             throw new SecureException("Node name should be unique across all siblings");
+        }
+    }
+
+    public static async Task ThrowIfUserExist(UserContext context, string code)
+    {
+        var count = await context.Set<UserModel>()
+            .AsNoTracking()
+            .CountAsync(n => n.Code == code);
+        if (count > 0)
+        {
+            throw new SecureException("User with this code already exist");
         }
     }
 }

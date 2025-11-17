@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using UserAPI.Interfaces;
 
@@ -6,6 +7,7 @@ namespace UserAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class JournalController(IJournalService service) : ControllerBase
 {
     private readonly IJournalService _service = service;
