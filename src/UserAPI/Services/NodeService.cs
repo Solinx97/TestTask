@@ -1,4 +1,5 @@
-﻿using UserAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using UserAPI.Data;
 using UserAPI.Exceptions;
 using UserAPI.Interfaces;
 using UserAPI.Models;
@@ -9,13 +10,12 @@ internal class NodeService(UserContext context) : INodeService
 {
     private readonly UserContext _context = context;
 
-    public async Task<NodeModel?> CreateAsync(string treeName, string nodeName, int? parentNodeId = null)
+    public async Task<NodeModel?> CreateAsync(string treeName, string? nodeName = null, int? parentNodeId = null)
     {
         ArgumentException.ThrowIfNullOrEmpty(nameof(treeName), treeName);
-        ArgumentException.ThrowIfNullOrEmpty(nameof(nodeName), nodeName);
 
         NodeModel node;
-        if (parentNodeId.HasValue)
+        if (!string.IsNullOrEmpty(nodeName) && parentNodeId.HasValue)
         {
             await SecureException.ThrowIfParentNotExist(_context, parentNodeId.Value);
             await SecureException.ThrowIfNodeNameNotUnique(_context, nodeName, parentNodeId.Value);
@@ -28,6 +28,14 @@ internal class NodeService(UserContext context) : INodeService
         }
 
         return node;
+    }
+
+    public async Task<NodeModel?> GetByTreeName(string treeName)
+    {
+        var tree = await _context.Set<NodeModel>()
+            .FirstOrDefaultAsync(t => string.Equals(t.Name, treeName, StringComparison.OrdinalIgnoreCase)) ?? await CreateAsync(treeName);
+
+        return tree;
     }
 
     public async Task DeleteAsync(int nodeId)

@@ -1,10 +1,10 @@
 ﻿namespace UserAPI.Models;
 
-public class JournalInfoRangeModel
+public class JournalRangeModel
 {
     public int Skip { get; set; }
 
     public int Count { get; set; }
 
-    public JournalInfoModel[] Items { get; set; }
+    public JournalModel[] Items { get; set; }
 }

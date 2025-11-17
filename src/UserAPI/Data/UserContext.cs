@@ -10,8 +10,6 @@ public class UserContext : DbContext
         Database.EnsureCreated();
     }
 
-    public DbSet<JournalInfoModel>? JournalInfo { get; }
-
     public DbSet<JournalModel>? Journal { get; }
 
     public DbSet<NodeModel>? Node { get; }

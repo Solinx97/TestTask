@@ -1,31 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using UserAPI.Data;
-using UserAPI.Models;
+using System.ComponentModel.DataAnnotations;
+using UserAPI.Interfaces;
 
 namespace UserAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class JournalController(UserContext context) : ControllerBase
+public class JournalController(IJournalService service) : ControllerBase
 {
-    private readonly UserContext _context = context;
+    private readonly IJournalService _service = service;
 
     [HttpGet]
-    public async Task<IActionResult> GetRange(int skip, int take)
+    public async Task<IActionResult> GetRange([Range(0, int.MaxValue)] int skip, [Range(0, int.MaxValue)] int take)
     {
-        var journals = await _context.Set<JournalInfoModel>()
-            .Skip(skip)
-            .Take(take)
-            .AsNoTracking()
-            .ToArrayAsync();
-
-        var journalRange = new JournalInfoRangeModel
-        {
-            Skip = skip,
-            Count = journals.Count(),
-            Items = journals
-        };
+        var journalRange = await _service.GetRangeAsync(skip, take);
 
         return Ok(journalRange);
     }
@@ -33,8 +21,7 @@ public class JournalController(UserContext context) : ControllerBase
     [HttpGet("{id:int:min(1)}")]
     public async Task<IActionResult> GetSingle(int id)
     {
-        var journal = await _context.Set<JournalInfoModel>()
-            .FindAsync(id);
+        var journal = await _service.GetSingleAsync(id);
 
         return Ok(journal);
     }

@@ -1,9 +1,11 @@
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 using UserAPI.Consts;
 using UserAPI.Data;
+using UserAPI.Interfaces;
+using UserAPI.Middlewares;
+using UserAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,9 @@ builder.Services.AddDbContext<UserContext>(options =>
 {
     options.UseSqlServer(databasePropsOptions.DefaultConnection);
 });
+
+builder.Services.AddScoped<INodeService, NodeService>();
+builder.Services.AddScoped<IJournalService, JournalService>();
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Debug)
@@ -48,25 +53,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseExceptionHandler(errorApp =>
-{
-    errorApp.Run(async context =>
-    {
-        context.Response.StatusCode = 500;
-        context.Response.ContentType = "application/json";
-
-        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
-        var ex = exceptionHandlerPathFeature?.Error;
-
-        Log.Error(ex, "Unhandled exception occurred");
-
-        var result = new
-        {
-            message = "An unexpected error occurred. Please try again later."
-        };
-
-        await context.Response.WriteAsJsonAsync(result);
-    });
-});
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.Run();

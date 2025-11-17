@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using UserAPI.Enums;
 using UserAPI.Exceptions;
 using UserAPI.Interfaces;
 
@@ -6,31 +8,38 @@ namespace UserAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class NodeController(INodeService service, ILogger<NodeController> logger) : ControllerBase
+public class NodeController(INodeService nodeService, IJournalService journalService , ILogger<NodeController> logger) : ControllerBase
 {
-    private readonly INodeService _service = service;
+    private readonly INodeService _nodeService = nodeService;
+    private readonly IJournalService _journalService = journalService;
     private readonly ILogger<NodeController> _logger = logger;
 
     [HttpPost]
-    public async Task<IActionResult> Create(string treeName, string nodeName, int? parentNodeId)
+    public async Task<IActionResult> Create([Required] string treeName, string? nodeName, int? parentNodeId)
     {
         try
         {
-            var node = await _service.CreateAsync(treeName, nodeName, parentNodeId);
+            var node = await _nodeService.CreateAsync(treeName, nodeName, parentNodeId);
 
             return Ok(node);
-        }
-        catch (ArgumentException ex)
-        {
-            _logger.LogError("Some argument was null or empty: {Arg}", ex.ParamName);
-
-            return BadRequest();
         }
         catch (SecureException ex)
         {
             _logger.LogError(ex.Message);
 
-            return BadRequest();
+            var journal = await _journalService.CreateAsync(ExceptionType.Secure, ex.Message);
+
+            var errorResponse = new
+            {
+                id = journal == null ? DateTime.UtcNow.Ticks.ToString() : journal.Id.ToString(),
+                type = ExceptionType.Secure,
+                data = new
+                {
+                    message = ex.Message
+                }
+            };
+
+            return StatusCode(500, errorResponse);
         }
     }
 
@@ -39,62 +48,56 @@ public class NodeController(INodeService service, ILogger<NodeController> logger
     {
         try
         {
-            await _service.DeleteAsync(nodeId);
+            await _nodeService.DeleteAsync(nodeId);
 
             return NoContent();
-        }
-        catch (ArgumentOutOfRangeException ex)
-        {
-            _logger.LogError("Some argument was incorrect: {Arg}", ex.ParamName);
-
-            return BadRequest();
         }
         catch (SecureException ex)
         {
             _logger.LogError(ex.Message);
 
-            return BadRequest();
-        }
-        catch (ArgumentNullException ex)
-        {
-            _logger.LogError("Some argument was null: {Arg}", ex.ParamName);
+            var journal = await _journalService.CreateAsync(ExceptionType.Secure, ex.Message);
 
-            return BadRequest();
+            var errorResponse = new
+            {
+                id = journal == null ? DateTime.UtcNow.Ticks.ToString() : journal.Id.ToString(),
+                type = ExceptionType.Secure,
+                data = new
+                {
+                    message = ex.Message
+                }
+            };
+
+            return StatusCode(500, errorResponse);
         }
     }
 
     [HttpPatch("{nodeId:int:min(1)}")]
-    public async Task<IActionResult> Rename(int nodeId, string newNodeName)
+    public async Task<IActionResult> Rename(int nodeId, [Required] string newNodeName)
     {
         try
         {
-            await _service.RenameAsync(nodeId, newNodeName);
+            await _nodeService.RenameAsync(nodeId, newNodeName);
 
             return NoContent();
-        }
-        catch (ArgumentOutOfRangeException ex)
-        {
-            _logger.LogError("Some argument was incorrect: {Arg}", ex.ParamName);
-
-            return BadRequest();
-        }
-        catch (ArgumentNullException ex)
-        {
-            _logger.LogError("Some argument was null: {Arg}", ex.ParamName);
-
-            return BadRequest();
-        }
-        catch (ArgumentException ex)
-        {
-            _logger.LogError("Some argument was null or empty: {Arg}", ex.ParamName);
-
-            return BadRequest();
         }
         catch (SecureException ex)
         {
             _logger.LogError(ex.Message);
 
-            return BadRequest();
+            var journal = await _journalService.CreateAsync(ExceptionType.Secure, ex.Message);
+
+            var errorResponse = new
+            {
+                id = journal == null ? DateTime.UtcNow.Ticks.ToString() : journal.Id.ToString(),
+                type = ExceptionType.Secure,
+                data = new
+                {
+                    message = ex.Message
+                }
+            };
+
+            return StatusCode(500, errorResponse);
         }
     }
 }

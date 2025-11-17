@@ -59,7 +59,7 @@ public class NodeServiceTests : ServiceTestsBase
         const int childrens = 3;
         const int parentId = 5;
 
-        using var context = CreateInMemoryContext(nameof(CreateAsync_Entity_ShouldCreateAndReturnCreatedEntity));
+        using var context = CreateInMemoryContext(nameof(CreateAsync_ThrowSecureException_ShouldNotCreateAndThrowSecureExceptionThatNameShouldBeUniqueBySiblings));
         await context.Set<NodeModel>().AddRangeAsync(NodeTestData.CreateTree(descendants, childrens));
         await context.SaveChangesAsync();
 
@@ -67,6 +67,54 @@ public class NodeServiceTests : ServiceTestsBase
 
         // Act and Assert
         await Assert.ThrowsAsync<SecureException>(() => service.CreateAsync("tree 1", "Node-2-2", parentId));
+    }
+
+    [Fact]
+    public async Task GetByTreeName_Entity_ShouldReturnExistTree()
+    {
+        // Arrange
+        const int descendants = 3;
+        const int childrens = 3;
+        const int treeId = 1;
+        const string treeName = "Tree";
+
+        using var context = CreateInMemoryContext(nameof(GetByTreeName_Entity_ShouldReturnExistTree));
+        await context.Set<NodeModel>().AddRangeAsync(NodeTestData.CreateTree(descendants, childrens));
+        await context.SaveChangesAsync();
+
+        var service = new NodeService(context);
+
+        // Act
+        var result = await service.GetByTreeName(treeName);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(treeId, result.Id);
+        Assert.Equal(treeName, result.Name);
+    }
+
+    [Fact]
+    public async Task GetByTreeName_Entity_ShouldCreateNewTreeAndReturnCreatedTree()
+    {
+        // Arrange
+        const int descendants = 3;
+        const int childrens = 3;
+        const int treeId = 41;
+        const string treeName = "Tree-1";
+
+        using var context = CreateInMemoryContext(nameof(CreateAsync_Entity_ShouldCreateAndReturnCreatedEntity));
+        await context.Set<NodeModel>().AddRangeAsync(NodeTestData.CreateTree(descendants, childrens));
+        await context.SaveChangesAsync();
+
+        var service = new NodeService(context);
+
+        // Act
+        var result = await service.GetByTreeName(treeName);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(treeId, result.Id);
+        Assert.Equal(treeName, result.Name);
     }
 
     [Fact]

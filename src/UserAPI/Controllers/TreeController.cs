@@ -1,34 +1,45 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using UserAPI.Data;
-using UserAPI.Models;
+using System.ComponentModel.DataAnnotations;
+using UserAPI.Enums;
+using UserAPI.Exceptions;
+using UserAPI.Interfaces;
 
 namespace UserAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class TreeController(UserContext context) : ControllerBase
+public class TreeController(INodeService nodeService, IJournalService journalService, ILogger<TreeController> logger) : ControllerBase
 {
-    private readonly UserContext _context = context;
+    private readonly INodeService _nodeService = nodeService;
+    private readonly IJournalService _journalService = journalService;
+    private readonly ILogger<TreeController> _logger = logger;
 
     [HttpGet]
-    public async Task<IActionResult> Get(string treeName)
+    public async Task<IActionResult> GetByTreeName([Required] string treeName)
     {
-        var tree = await _context.Set<NodeModel>()
-            .FirstOrDefaultAsync(t => string.Equals(t.Name, treeName, StringComparison.OrdinalIgnoreCase)) ?? await CreateTreeAsync(treeName);
-        return Ok(tree);
-    }
-
-    private async Task<NodeModel> CreateTreeAsync(string treeName)
-    {
-        var newTree = new NodeModel
+        try
         {
-            Name = treeName
-        };
+            var tree = await _nodeService.GetByTreeName(treeName);
 
-        var entityEntry = await _context.Set<NodeModel>().AddAsync(newTree);
-        await _context.SaveChangesAsync();
+            return Ok(tree);
+        }
+        catch (SecureException ex)
+        {
+            _logger.LogError(ex.Message);
 
-        return entityEntry.Entity;
+            var journal = await _journalService.CreateAsync(ExceptionType.Secure, ex.Message);
+
+            var errorResponse = new
+            {
+                id = journal == null ? DateTime.UtcNow.Ticks.ToString() : journal.Id.ToString(),
+                type = ExceptionType.Secure,
+                data = new
+                {
+                    message = ex.Message
+                }
+            };
+
+            return StatusCode(500, errorResponse);
+        }
     }
 }
