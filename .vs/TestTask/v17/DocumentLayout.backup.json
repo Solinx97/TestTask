@@ -1,0 +1,96 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "F:\\source\\TestTask\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{63F8F260-48D9-4C20-92CE-3881041862DC}|tests\\UserAPI.Tests\\UserAPI.Tests.csproj|f:\\source\\testtask\\tests\\userapi.tests\\nodeservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{63F8F260-48D9-4C20-92CE-3881041862DC}|tests\\UserAPI.Tests\\UserAPI.Tests.csproj|solutionrelative:tests\\userapi.tests\\nodeservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{63F8F260-48D9-4C20-92CE-3881041862DC}|tests\\UserAPI.Tests\\UserAPI.Tests.csproj|f:\\source\\testtask\\tests\\userapi.tests\\factory\\nodetestdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{63F8F260-48D9-4C20-92CE-3881041862DC}|tests\\UserAPI.Tests\\UserAPI.Tests.csproj|solutionrelative:tests\\userapi.tests\\factory\\nodetestdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66C1A4C8-0383-4AA3-B573-E2BF586D7517}|src\\UserAPI\\UserAPI.csproj|f:\\source\\testtask\\src\\userapi\\services\\nodeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{66C1A4C8-0383-4AA3-B573-E2BF586D7517}|src\\UserAPI\\UserAPI.csproj|solutionrelative:src\\userapi\\services\\nodeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66C1A4C8-0383-4AA3-B573-E2BF586D7517}|src\\UserAPI\\UserAPI.csproj|f:\\source\\testtask\\src\\userapi\\exceptions\\secureexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{66C1A4C8-0383-4AA3-B573-E2BF586D7517}|src\\UserAPI\\UserAPI.csproj|solutionrelative:src\\userapi\\exceptions\\secureexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "NodeServiceTests.cs",
+              "DocumentMoniker": "F:\\source\\TestTask\\tests\\UserAPI.Tests\\NodeServiceTests.cs",
+              "RelativeDocumentMoniker": "tests\\UserAPI.Tests\\NodeServiceTests.cs",
+              "ToolTip": "F:\\source\\TestTask\\tests\\UserAPI.Tests\\NodeServiceTests.cs",
+              "RelativeToolTip": "tests\\UserAPI.Tests\\NodeServiceTests.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAgwDoAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-17T09:38:59.591Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "NodeService.cs",
+              "DocumentMoniker": "F:\\source\\TestTask\\src\\UserAPI\\Services\\NodeService.cs",
+              "RelativeDocumentMoniker": "src\\UserAPI\\Services\\NodeService.cs",
+              "ToolTip": "F:\\source\\TestTask\\src\\UserAPI\\Services\\NodeService.cs",
+              "RelativeToolTip": "src\\UserAPI\\Services\\NodeService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-17T11:50:24.464Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "NodeTestData.cs",
+              "DocumentMoniker": "F:\\source\\TestTask\\tests\\UserAPI.Tests\\Factory\\NodeTestData.cs",
+              "RelativeDocumentMoniker": "tests\\UserAPI.Tests\\Factory\\NodeTestData.cs",
+              "ToolTip": "F:\\source\\TestTask\\tests\\UserAPI.Tests\\Factory\\NodeTestData.cs",
+              "RelativeToolTip": "tests\\UserAPI.Tests\\Factory\\NodeTestData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-17T13:04:59.767Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SecureException.cs",
+              "DocumentMoniker": "F:\\source\\TestTask\\src\\UserAPI\\Exceptions\\SecureException.cs",
+              "RelativeDocumentMoniker": "src\\UserAPI\\Exceptions\\SecureException.cs",
+              "ToolTip": "F:\\source\\TestTask\\src\\UserAPI\\Exceptions\\SecureException.cs",
+              "RelativeToolTip": "src\\UserAPI\\Exceptions\\SecureException.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAIA5wB8AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-17T12:58:31.548Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
