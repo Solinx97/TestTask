@@ -1,6 +1,53 @@
-@UserAPI_HostAddress = http://localhost:5220
+@UserAPI_HostAddress = https://localhost:7117
 
-GET {{UserAPI_HostAddress}}/weatherforecast/
+// RememberMe([Required] string code)
+GET {{UserAPI_HostAddress}}/api/partner?code=test
 Accept: application/json
 
 ###
+
+// Create([Required] string treeName, string? nodeName, int? parentNodeId)
+POST {{UserAPI_HostAddress}}/api/node?treeName=tree
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBcGlVc2VyIiwiY29kZSI6InRlc3QiLCJzY29wZSI6ImFwaSIsImV4cCI6MTc2MzQ1ODU1OSwiaXNzIjoidXNlci1hcGkifQ.pgY48feA6oZFUh10aKQTEZvdm3K9lNX5BiEGCb8HogU
+###
+
+// Create([Required] string treeName, string? nodeName, int? parentNodeId)
+POST {{UserAPI_HostAddress}}/api/node?treeName=tree&nodeName=testNode&parentNodeId=1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBcGlVc2VyIiwiY29kZSI6InRlc3QiLCJzY29wZSI6ImFwaSIsImV4cCI6MTc2MzQ1ODU1OSwiaXNzIjoidXNlci1hcGkifQ.pgY48feA6oZFUh10aKQTEZvdm3K9lNX5BiEGCb8HogU
+
+###
+
+// Delete(int nodeId)
+DELETE {{UserAPI_HostAddress}}/api/node/2
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBcGlVc2VyIiwiY29kZSI6InRlc3QiLCJzY29wZSI6ImFwaSIsImV4cCI6MTc2MzQ1ODU1OSwiaXNzIjoidXNlci1hcGkifQ.pgY48feA6oZFUh10aKQTEZvdm3K9lNX5BiEGCb8HogU
+
+###
+
+// Rename(int nodeId, [Required] string newNodeName)
+PATCH {{UserAPI_HostAddress}}/api/node/1?newNodeName=checkTree
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBcGlVc2VyIiwiY29kZSI6InRlc3QiLCJzY29wZSI6ImFwaSIsImV4cCI6MTc2MzQ1ODU1OSwiaXNzIjoidXNlci1hcGkifQ.pgY48feA6oZFUh10aKQTEZvdm3K9lNX5BiEGCb8HogU
+
+###
+
+// GetByTreeName([Required] string treeName)
+GET {{UserAPI_HostAddress}}/api/tree?treeName=tree
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBcGlVc2VyIiwiY29kZSI6InRlc3QiLCJzY29wZSI6ImFwaSIsImV4cCI6MTc2MzQ1ODU1OSwiaXNzIjoidXNlci1hcGkifQ.pgY48feA6oZFUh10aKQTEZvdm3K9lNX5BiEGCb8HogU
+
+###
+
+// GetRange([Range(0, int.MaxValue)] int skip, [Range(0, int.MaxValue)] int take)
+GET {{UserAPI_HostAddress}}/api/journal?skip=1&take=1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBcGlVc2VyIiwiY29kZSI6InRlc3QiLCJzY29wZSI6ImFwaSIsImV4cCI6MTc2MzQ1ODU1OSwiaXNzIjoidXNlci1hcGkifQ.pgY48feA6oZFUh10aKQTEZvdm3K9lNX5BiEGCb8HogU
+
+###
+
+// GetSingle(int id)
+GET {{UserAPI_HostAddress}}/api/journal/1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBcGlVc2VyIiwiY29kZSI6InRlc3QiLCJzY29wZSI6ImFwaSIsImV4cCI6MTc2MzQ1ODU1OSwiaXNzIjoidXNlci1hcGkifQ.pgY48feA6oZFUh10aKQTEZvdm3K9lNX5BiEGCb8HogU

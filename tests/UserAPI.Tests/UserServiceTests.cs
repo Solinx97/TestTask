@@ -2,7 +2,6 @@
 using UserAPI.Models;
 using UserAPI.Services;
 using UserAPI.Tests.Factory;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace UserAPI.Tests;
 
@@ -66,12 +65,12 @@ public class UserServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async Task GetAsync_Entity_ShouldReturnNoAnyUserByCode()
+    public async Task GetAsync_Entity_ShouldCreateAndReturnCreatedEntity()
     {
         // Arrange
-        const string code = "oleg";
+        const string code = "test18";
 
-        using var context = CreateInMemoryContext(nameof(GetAsync_Entity_ShouldReturnNoAnyUserByCode));
+        using var context = CreateInMemoryContext(nameof(GetAsync_Entity_ShouldCreateAndReturnCreatedEntity));
         await context.Set<UserModel>().AddRangeAsync(UserTestData.CreateUsers());
         await context.SaveChangesAsync();
 
@@ -81,7 +80,8 @@ public class UserServiceTests : ServiceTestsBase
         var result = await service.GetAsync(code);
 
         // Assert
-        Assert.Null(result);
+        Assert.NotNull(result);
+        Assert.Equal(code, result.Code);
     }
 
     [Fact]

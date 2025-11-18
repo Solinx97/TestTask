@@ -52,6 +52,23 @@ public class NodeServiceTests : ServiceTestsBase
     }
 
     [Fact]
+    public async Task CreateAsync_ThrowSecureException_ShouldNotCreateAndThrowSecureExceptionThatNameShouldBeUniqueByTrees()
+    {
+        // Arrange
+        const int descendants = 3;
+        const int childrens = 3;
+
+        using var context = CreateInMemoryContext(nameof(CreateAsync_ThrowSecureException_ShouldNotCreateAndThrowSecureExceptionThatNameShouldBeUniqueByTrees));
+        await context.Set<NodeModel>().AddRangeAsync(NodeTestData.CreateTree(descendants, childrens));
+        await context.SaveChangesAsync();
+
+        var service = new NodeService(context);
+
+        // Act and Assert
+        await Assert.ThrowsAsync<SecureException>(() => service.CreateAsync("Tree"));
+    }
+
+    [Fact]
     public async Task CreateAsync_ThrowSecureException_ShouldNotCreateAndThrowSecureExceptionThatNameShouldBeUniqueBySiblings()
     {
         // Arrange
@@ -210,6 +227,51 @@ public class NodeServiceTests : ServiceTestsBase
         // Assert
         Assert.NotNull(renamedNode);
         Assert.Equal(newName, renamedNode.Name);
+    }
+
+    [Fact]
+    public async Task RenameAsync_ThrowSecureException_ShouldNotRenameNodeNameAndThrowSecureExceptionThatNameShouldBeUniqueByTrees()
+    {
+        // Arrange
+        const int descendants = 3;
+        const int childrens = 3;
+        const int renameNodeId = 1;
+        const string newName = "Tree Again";
+
+        using var context = CreateInMemoryContext(nameof(RenameAsync_ThrowSecureException_ShouldNotRenameNodeNameAndThrowSecureExceptionThatNameShouldBeUniqueByTrees));
+        await context.Set<NodeModel>().AddRangeAsync(NodeTestData.CreateTree(descendants, childrens));
+        await context.SaveChangesAsync();
+
+        await context.Set<NodeModel>().AddAsync(new NodeModel
+        {
+            Id = 75,
+            Name = newName,
+        });
+        await context.SaveChangesAsync();
+
+        var service = new NodeService(context);
+
+        // Act and Assert
+        await Assert.ThrowsAsync<SecureException>(() => service.RenameAsync(renameNodeId, newName));
+    }
+
+    [Fact]
+    public async Task RenameAsync_ThrowSecureException_ShouldNotRenameNodeNameAndThrowSecureExceptionThatNameSame()
+    {
+        // Arrange
+        const int descendants = 3;
+        const int childrens = 3;
+        const int renameNodeId = 1;
+        const string newName = "Tree";
+
+        using var context = CreateInMemoryContext(nameof(RenameAsync_ThrowSecureException_ShouldNotRenameNodeNameAndThrowSecureExceptionThatNameSame));
+        await context.Set<NodeModel>().AddRangeAsync(NodeTestData.CreateTree(descendants, childrens));
+        await context.SaveChangesAsync();
+
+        var service = new NodeService(context);
+
+        // Act and Assert
+        await Assert.ThrowsAsync<SecureException>(() => service.RenameAsync(renameNodeId, newName));
     }
 
     [Fact]

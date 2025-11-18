@@ -30,14 +30,25 @@ public class SecureException(string message) : Exception(message)
         }
     }
 
-    public static async Task ThrowIfNodeNameNotUnique(UserContext context, string nodeName, int parentId)
+    public static async Task ThrowIfTreeNameNotUnique(UserContext context, string nodeName)
+    {
+        var count = await context.Set<NodeModel>()
+            .AsNoTracking()
+            .CountAsync(n => n.ParentNodeId == null && n.Name == nodeName);
+        if (count > 0)
+        {
+            throw new SecureException("Tree name should be unique across all trees");
+        }
+    }
+
+    public static async Task ThrowIfNodeNameNotUnique(UserContext context, string nodeName, int? parentId)
     {
         var count = await context.Set<NodeModel>()
             .AsNoTracking()
             .CountAsync(n => n.ParentNodeId == parentId && n.Name == nodeName);
         if (count > 0)
         {
-            throw new SecureException("Node name should be unique across all siblings");
+            throw new SecureException("Node name should be unique across all siblings/trees");
         }
     }
 

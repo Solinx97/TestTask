@@ -26,13 +26,15 @@ internal class UserService(UserContext context) : IUserService
         return entityEntry.Entity;
     }
 
-    public async Task<UserModel?> GetAsync(string code)
+    public async Task<UserModel> GetAsync(string code)
     {
         ArgumentException.ThrowIfNullOrEmpty(code);
 
-        var entityEntry = await _context.Set<UserModel>().FirstOrDefaultAsync(u => u.Code == code);
+        var entity = await _context.Set<UserModel>().FirstOrDefaultAsync(u => u.Code == code);
         await _context.SaveChangesAsync();
 
-        return entityEntry;
+        entity ??= await CreateAsync(code);
+
+        return entity!;
     }
 }

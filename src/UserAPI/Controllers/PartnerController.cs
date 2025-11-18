@@ -22,11 +22,7 @@ public class PartnerController(IUserService userService, IAuthService authServic
     {
         try
         {
-            var user = await _userService.GetAsync(code);
-            if (user == null)
-            {
-                await _userService.CreateAsync(code);
-            }
+            await _userService.GetAsync(code);
 
             var token = _authService.GenerateJwtToken(code);
 

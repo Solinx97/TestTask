@@ -24,6 +24,8 @@ internal class NodeService(UserContext context) : INodeService
         }
         else
         {
+            await SecureException.ThrowIfTreeNameNotUnique(_context, treeName);
+
             node = await CreateNewTreeAsync(treeName);
         }
 
@@ -33,7 +35,7 @@ internal class NodeService(UserContext context) : INodeService
     public async Task<NodeModel?> GetByTreeName(string treeName)
     {
         var tree = await _context.Set<NodeModel>()
-            .FirstOrDefaultAsync(t => string.Equals(t.Name, treeName, StringComparison.OrdinalIgnoreCase)) ?? await CreateAsync(treeName);
+            .FirstOrDefaultAsync(t => t.Name == treeName) ?? await CreateAsync(treeName);
 
         return tree;
     }
@@ -59,7 +61,7 @@ internal class NodeService(UserContext context) : INodeService
         var node = await _context.Set<NodeModel>().FindAsync(nodeId);
         ArgumentNullException.ThrowIfNull(node, nameof(node));
 
-        await SecureException.ThrowIfNodeNameNotUnique(_context, newName, node.ParentNodeId ?? 0);
+        await SecureException.ThrowIfNodeNameNotUnique(_context, newName, node.ParentNodeId);
 
         node.Name = newName;
 
